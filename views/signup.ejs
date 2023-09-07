@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>註冊</title>
+    <%- include("./partials/style") %>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    <form action="/signup" method="POST">
+      <label for="UserID">帳號 : </label>
+      <input type="text" name="UserID" />
+      <label for="Password">密碼 : </label>
+      <input type="password" name="Password" />
+      <button type="submit">註冊</button>
+    </form>
+  </body>
+</html>

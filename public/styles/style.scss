@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+  position: relative;
+}
+
+.container {
+  width: 700px;
+  margin: 0px auto;
+  border: 1px solid black;
+}
+
+.full-container {
+  width: 100%;
+  border: 1px solid black;
+}

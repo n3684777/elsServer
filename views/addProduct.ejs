@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>增加商城物品</title>
+    <%- include("./partials/style") %>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    <div class="container">
+      <form action="/Utility/addProduct" method="POST">
+        <label for="product">增加商品名稱 : </label>
+        <input type="text" name="product" />
+        <label for="amount">一次性購買商品數量 : </label>
+        <input type="text" name="amount" />
+        <label for="price">商品價格 : </label>
+        <input type="text" name="price" />
+        <button type="submit">送出</button>
+      </form>
+    </div>
+  </body>
+</html>

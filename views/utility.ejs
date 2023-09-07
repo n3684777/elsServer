@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自助開通</title>
+    <%- include("./partials/style") %>
+  </head>
+  <body>
+    <%- include("./partials/nav") %>
+    <div class="container">
+      <p>遊戲名稱 : <%= nickname %></p>
+      <p>遊戲UID : <%= userID %></p>
+      <ul class="nav">
+        <li class="btn btn-info nav-link">
+          <a href="/utility/b/<%= userID %>" class="nav-link">開啟B欄</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/spirit/<%= userID %>" class="nav-link">刷新疲勞</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/addSkin/<%= userID %>" class="nav-link">增加時裝</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/money/<%= userID %>" class="nav-link">修改金錢</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/addProduct" class="nav-link">增加商城物品</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+  s
+</html>
