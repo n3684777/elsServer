@@ -9,8 +9,10 @@
   <body>
     <%- include("./partials/nav") %>
     <form action="/Utility/addSkin/<%= userID %>" method="POST">
-      <label for="skin">增加時裝ID : </label>
+      <label for="skin">增加道具ID : </label>
       <input type="text" name="skin" />
+      <label for="InventoryCategory">道具類型 : </label>
+      <input type="text" name="InventoryCategory" />
       <button type="submit">送出</button>
     </form>
   </body>

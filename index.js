@@ -449,10 +449,47 @@ app.get("/Utility/addSkin", veifyData, (req, res) => {
 // 增加時裝
 app.post("/Utility/addSkin/:userid", veifyData, (req, res) => {
   let { userid } = req.params;
-  let { skin } = req.body;
+  let { skin, InventoryCategory } = req.body;
   let { userID, nickname } = req.session.user;
-  sql.query(
-    `
+
+  console.log(InventoryCategory);
+
+  switch (InventoryCategory) {
+    case "1": {
+      sql.query(
+        `
+  
+     
+      USE [Game01]
+      INSERT INTO [dbo].[GItem]
+                 ([UnitUID]
+                 ,[ItemID]
+                 ,[InventoryCategory]
+                 ,[SlotID]
+                 ,[UsageType]
+                 ,[Quantity]
+                 ,[Endurance]
+                 ,[ExpandedSocketNum]
+                 ,[Inserted]
+                 ,[RegDate])
+           VALUES
+                 (${userid},${skin},2,1,0,0,10000,0,125,'2023-09-03 01:01:01')
+  
+       `,
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.send(err);
+          } else {
+            return res.redirect("/Utility");
+          }
+        }
+      );
+      break;
+    }
+    case "7":
+      sql.query(
+        `
     
        
         USE [Game01]
@@ -471,15 +508,20 @@ app.post("/Utility/addSkin/:userid", veifyData, (req, res) => {
                    (${userid},${skin},7,1,0,0,'-1',0,108,'2023-09-03 01:01:01')
     
          `,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.send(err);
-      } else {
-        res.redirect("/Utility");
-      }
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.send(err);
+          } else {
+            return res.redirect("/Utility");
+          }
+        }
+      );
+      break;
+    default: {
+      res.redirect("/Utility/addSkin");
     }
-  );
+  }
 });
 
 //開啟B欄
