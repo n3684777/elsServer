@@ -93,16 +93,47 @@ app.get("/Utility", veifyData, (req, res) => {
   });
 });
 
+//測試功能用
+app.get("/Utility/test/:userid", veifyData, (req, res) => {
+  let { userid } = req.params;
+
+  res.redirect("/Utility");
+});
+
+// 刪除角色
+app.get("/Utility/delete/:userid", veifyData, (req, res) => {
+  let { userid } = req.params;
+  sql.query(
+    `USE [Game01] DELETE FROM [dbo].[GUnit] WHERE [unitUID] = ${userid}`
+  ),
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+    };
+  sql.query(
+    `USE [Game01] DELETE FROM [dbo].[GUnitNickName] WHERE [unitUID] = ${userid}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+      }
+    }
+  );
+});
+
 // 稱號全開
 app.get("/Utility/title/:userid", async (req, res) => {
   let { userid } = req.params;
   let { userID, nickname } = req.session.user;
 
-  sql.query(`DELETE FROM [dbo].[GTitle_Complete]`, (err, result) => {
-    if (err) {
-      console.log(err);
+  sql.query(
+    `USE [Game01] DELETE FROM [dbo].[GTitle_Complete]`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      }
     }
-  });
+  );
 
   sql.query(
     `USE [Game01] INSERT INTO [dbo].[GTitle_Complete] ([UnitUID],[TitleID],[EndDate],[IsHang]) VALUES (${userid},10,'2040-12-31 23:59:00','1'),
@@ -369,7 +400,7 @@ app.get("/Utility/money/:userid", veifyData, async (req, res) => {
   let { userid } = req.params;
   let { userID, nickname } = req.session.user;
   await sql.query(
-    `USE [Game01] UPDATE [dbo].[GUnit] SET [GamePoint] = '2000000000' WHERE [UnitUID] = '${userid}' `,
+    `USE [Game01] UPDATE [dbo].[GUnit] SET [GamePoint] = '1000000000' WHERE [UnitUID] = '${userid}' `,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -440,13 +471,35 @@ app.post("/Utility/addProduct", (req, res) => {
   );
 });
 
-app.get("/Utility/addSkin", veifyData, (req, res) => {
+// 強化裝備
+app.get("/Utility/refine", (req, res) => {
+  let { userID } = req.session.user;
+  res.render("refine", { userID });
+});
+
+app.post("/Utility/refine/:userid", (req, res) => {
   let { userid } = req.params;
-  let { userID, nickname } = req.session.user;
-  res.render("addSkin", { userID });
+  let { level } = req.body;
+
+  sql.query(
+    `USE [Game01] UPDATE [dbo].[GItemEnchant] SET [ELevel] = ${level} WHERE [UnitUID] = ${userid}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        return res.send(err);
+      } else {
+        res.redirect("/Utility");
+      }
+    }
+  );
 });
 
 // 增加時裝
+app.get("/Utility/addSkin", veifyData, (req, res) => {
+  let { userID } = req.session.user;
+  res.render("addSkin", { userID });
+});
+
 app.post("/Utility/addSkin/:userid", veifyData, (req, res) => {
   let { userid } = req.params;
   let { skin, InventoryCategory } = req.body;

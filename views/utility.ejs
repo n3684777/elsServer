@@ -10,7 +10,7 @@
     <%- include("./partials/nav") %>
     <div class="container">
       <p>遊戲名稱 : <%= nickname %></p>
-      <p>遊戲UID : <%= userID %></p>
+      <p>遊戲UID : <span class="userID"><%= userID %></span></p>
       <ul class="nav">
         <li class="btn btn-info nav-link">
           <a href="/utility/b/<%= userID %>" class="nav-link">開啟B欄</a>
@@ -33,8 +33,28 @@
         <li class="btn btn-info nav-link">
           <a href="/Utility/title/<%= userID %>" class="nav-link">稱號全開</a>
         </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/refine" class="nav-link">強化裝備</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="#!" class="nav-link" onclick="deleteCheck()">刪除角色</a>
+        </li>
+        <li class="btn btn-info nav-link">
+          <a href="/Utility/test/<%= userID %>" class="nav-link">測試(勿點)</a>
+        </li>
       </ul>
     </div>
+    <script>
+      function deleteCheck() {
+        let check = confirm("確定刪除此角色嗎?");
+        if (check) {
+          let userID = document.querySelector(".userID").innerText;
+          fetch(`/Utility/delete/${userID}`, {
+            method: "GET",
+          });
+        }
+      }
+    </script>
   </body>
   s
 </html>
