@@ -5,11 +5,19 @@
 
 .container {
   width: 700px;
+  height: 100px;
   margin: 0px auto;
-  border: 1px solid black;
+  // border: 1px solid black;
 }
 
 .full-container {
   width: 100%;
   border: 1px solid black;
+}
+
+.jobCode {
+  width: 100px;
+  height: 50px;
+  overflow: hidden;
+  // border: 10px solid black;
 }

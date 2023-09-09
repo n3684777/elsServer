@@ -104,7 +104,8 @@ app.get("/Utility/test/:userid", veifyData, (req, res) => {
 app.get("/Utility/delete/:userid", veifyData, (req, res) => {
   let { userid } = req.params;
   sql.query(
-    `USE [Game01] DELETE FROM [dbo].[GUnit] WHERE [unitUID] = ${userid}`
+    `USE [Game01] DELETE FROM [dbo].[GUnit] WHERE [unitUID] = ${userid}
+    USE [Game01] DELETE FROM [dbo].[GUnitNickName] WHERE [unitUID] = ${userid}`
   ),
     (err) => {
       if (err) {
@@ -119,10 +120,79 @@ app.get("/Utility/delete/:userid", veifyData, (req, res) => {
       }
     }
   );
+  res.redirect("/");
+});
+
+// 一鍵擴包
+app.get("/utility/itemSlots/:userid", (req, res) => {
+  let { userid } = req.params;
+  sql.query(
+    `USE [Game01] SELECT [UnitUID] FROM [dbo].[GItemInventorySize] WHERE [unitUID] = ${userid}`,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.send(err);
+      } else {
+        sql.query(
+          `USE [Game01] UPDATE [dbo].[GItemInventorySize] SET [NumSlot] = 50 
+            USE [Game01] INSERT INTO [dbo].[GItemInventorySize] ([UnitUID],[InventoryCategory],[NumSlot],[RegDate]) 
+            VALUES 
+            (${userid},1,50,GETDATE()),
+            (${userid},2,50,GETDATE()),
+            (${userid},3,50,GETDATE()),
+            (${userid},4,50,GETDATE()),
+            (${userid},5,50,GETDATE()),
+            (${userid},6,50,GETDATE()),
+            (${userid},7,50,GETDATE()),
+            (${userid},8,50,GETDATE())`,
+          (err) => {
+            if (err) {
+              console.log(err);
+              return res.send(err);
+            } else {
+              res.redirect("/Utility");
+            }
+          }
+        );
+      }
+    }
+  );
+});
+
+// 當前技能滿等
+app.get("/Utility/skill/:userid", (req, res) => {
+  let { userid } = req.params;
+  sql.query(
+    `USE [Game01] UPDATE [dbo].[GSkill_New] SET [Level] = 30 WHERE [UnitUID]= ${userid}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        return res.send(err);
+      } else {
+        res.redirect("/Utility");
+      }
+    }
+  );
+});
+
+// 一鍵滿等
+app.get("/Utility/level/:userid", veifyData, (req, res) => {
+  let { userid } = req.params;
+  sql.query(
+    `USE [Game01] UPDATE [dbo].[GUnit] SET [Exp] = 1000000000,[Level] = 67 WHERE [unitUID] = ${userid}`,
+    (err) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        return res.redirect("/Utility");
+      }
+    }
+  );
 });
 
 // 稱號全開
-app.get("/Utility/title/:userid", async (req, res) => {
+app.get("/Utility/title/:userid", veifyData, async (req, res) => {
   let { userid } = req.params;
   let { userID, nickname } = req.session.user;
 
@@ -431,7 +501,7 @@ app.post("/Utility/job/:userid", veifyData, (req, res) => {
         console.log(err);
         return res.send(err);
       } else {
-        res.redirect("/Utility");
+        res.redirect("/Utility/job");
       }
     }
   );
